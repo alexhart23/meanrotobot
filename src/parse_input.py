@@ -51,24 +51,59 @@ def identify_players(input):
     return players
 
 
-def get_player_info(player,rankings):
+def identify_player_nickname(player, nicknames):
+    print("Seeing if provided name is a known nickname...")
+    nicknames = csv.DictReader(open(nicknames))
+    for row in nicknames:
+        stored_nickname = row['nickname']
+        match_score = name_tools.match(player, stored_nickname)
+        if match_score >= 0.95:
+            identified_player = row['playername']
+            print("Found a match: " + player + "="+ stored_nickname,
+                  row['playername'], match_score)
+            return identified_player
+            break
+    else:
+        return player
+
+
+def get_player_info(player, rankings, nicknames):
     rankings = csv.DictReader(open(rankings))
-    provided_name = player
+
+    # first, see if a nickname was used. if so, convert it to a full name
+    provided_name = identify_player_nickname(player, nicknames)
+
+    # it takes a bunch of time to run the name_match against EVERY line,
+    # so we're only going to check the lines that have at least one
+    # of the names from a players full name
+
+    matches = []
     for row in rankings:
+        split_name = provided_name.split(" ")
         stored_name = row['playername']
-        match_score = name_tools.match(provided_name, stored_name)
-        if match_score > 0.78:
+        if any(s in stored_name for s in split_name):
+            match_score = name_tools.match(provided_name, stored_name)
             pos = str(row['playerposition'])
             team = str(row['playerteam'])
             ovr_rank = int(row['overallRank'])
             pos_rank = int(row['positionRank'])
-            return (stored_name, pos, team, ovr_rank, pos_rank)
+            # if we get a perfect match, automatically return that
+            if match_score == 1.0:
+                return (
+                match_score, stored_name, pos, team, ovr_rank, pos_rank)
+            elif match_score > 0.60:
+                matches.append(
+                    (match_score, stored_name, pos, team, ovr_rank, pos_rank))
+    sorted_matches = sorted(matches, key=lambda tup: tup[0], reverse=True)
+    best_match = sorted_matches[0]
+    return best_match
 
 
 def return_selection(players, selections):
     # 'players' format:
-    # (name, position, team, overall rank, position rank)
-    found_players = sorted(players, key=lambda tup: tup[3])
+    # (match score, name, position, team, overall rank, position rank)
+    # TODO - if all the players are of the same position, use pos rank
+    found_players = sorted(players, key=lambda tup: tup[4])
     selected_players = found_players[:int(selections)]
     return selected_players
 

@@ -1,3 +1,4 @@
 __author__ = 'Alex Hart'
 
-rankings = "rankings/player_rankings.csv"
+rankings = "rankings/FFA-Projections.csv"
+nicknames = "rankings/player_nicknames.csv"
