@@ -51,8 +51,8 @@ def identify_players(input):
     return players
 
 
-def get_player_info(player, ppr, return_yards):
-    rankings = csv.DictReader(open("rankings/FFA-Projections.csv"))
+def get_player_info(player,rankings):
+    rankings = csv.DictReader(open(rankings))
     provided_name = player
     for row in rankings:
         stored_name = row['playername']

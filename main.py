@@ -1,6 +1,6 @@
 __author__ = 'Alex Hart'
 
-from src import get_input, parse_input
+from src import configs, get_input, parse_input
 
 tweet_unmod = get_input.get_tweet()
 tweet = tweet_unmod.lower()
@@ -23,7 +23,7 @@ print("Possible players: %s" % possible_players)
 
 confirmed_players = []
 for player in possible_players:
-    player_info = parse_input.get_player_info(player, ppr, return_yards)
+    player_info = parse_input.get_player_info(player, configs.rankings)
     print(player_info)
     confirmed_players.append(player_info)
 
