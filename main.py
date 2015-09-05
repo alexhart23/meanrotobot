@@ -23,7 +23,7 @@ print("Possible players: %s" % possible_players)
 
 confirmed_players = []
 for player in possible_players:
-    player_info = parse_input.get_player_info(player, configs.rankings)
+    player_info = parse_input.get_player_info(player, configs.rankings,configs.nicknames)
     print(player_info)
     confirmed_players.append(player_info)
 
