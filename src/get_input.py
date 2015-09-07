@@ -5,7 +5,7 @@ def get_tweet():
     tweet = """pick : OBJ Charles Johnson, megatron, l murray foster. .5 ppr return yards""" #good
     tweet = """Manning, Manning or bradford""" #did not work
     tweet = """Cody Parkey, Stephen Gostowski or Kai Forbath or Tucker""" #didn't find gostowski - spelled wrong
-    tweet = """Cosy Parkey, stephen gostkowski or kai forbath""" # worked
+    '''tweet = """Cosy Parkey, stephen gostkowski or kai forbath""" # worked
     tweet = """I need lineup help: Calvin Johnson or Eddy Lacy?""" #worked
     tweet = """pick 2: Latavius Murray, Gronkowski, or Shady""" #worked
     tweet = """Who should I start Aaron Rodgers or Tom Brady?""" # worked #32.12 second to finish. 6.09 after. MONEY
@@ -16,5 +16,5 @@ def get_tweet():
     tweet = """Tucker or Forbath"""
     tweet = """pick 2 AD, Bell, or Lacy,Megatron,Antonio Brown"""
     tweet = """LeVeon Bell or or Lacy"""
-    #tweet = """CJ2K or David Johnson"""
+    #tweet = """CJ2K or David Johnson"""'''
     return tweet

@@ -11,8 +11,7 @@ def determine_response_category(options):
         rankings.append(i[3])
     print(rankings)
     if any(obj for obj in options if obj[1]=="K"):
-        response_category = "kicker"
-    #elif all(rank for rank in rankings if rank < 20):
+        response_category = "kickers"
     elif all(rank < 20 for rank in rankings):
         response_category = "small_gap_very_high"
     elif all(rank > 150 for rank in rankings):
