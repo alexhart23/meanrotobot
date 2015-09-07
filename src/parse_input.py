@@ -38,33 +38,33 @@ def identify_total_selections(input):
 
 # identify the players that are involved in the question
 def identify_possible_players(input):
-    # TODO: Really, probably should be searching for individual nouns and go from there
     players = []
     tokens = tokenize_input(input)
     players = [i[0] for i in tokens if i[1] == "NN" or i[1] == "NNP"]
-    #players = [el for el in players if el != "ppr"]
+    # players = [el for el in players if el != "ppr"]
     return players
 
 
 def check_player_by_nickname(player, nicknames):
-    print("Seeing if \"%s\" is a known nickname..." %player)
+    print("Seeing if \"%s\" is a known nickname..." % player)
     nicknames = csv.DictReader(open(nicknames))
     for row in nicknames:
         stored_nickname = row['nickname']
         match_score = name_tools.match(player, stored_nickname)
         if match_score >= 0.95:
             identified_player = row['playername']
-            print("Found a match: " + player + "="+ stored_nickname,
+            print("Found a match: " + player + "=" + stored_nickname,
                   identified_player, match_score)
             return identified_player
     else:
-        print("Din't find %s in nicknames list" %player)
+        print("Din't find %s in nicknames list" % player)
         return None
 
-def check_player_against_rankings(player,rankings):
+
+def check_player_against_rankings(player, rankings):
     rankings = csv.DictReader(open(rankings))
     matches = []
-    print("checking for \"%s\" in rankings with initial search" %player)
+    print("checking for \"%s\" in rankings with initial search" % player)
     for row in rankings:
         split_name = player.lower().split(" ")
         stored_name = row['playername']
@@ -79,15 +79,15 @@ def check_player_against_rankings(player,rankings):
             if match_score == 1.0:
                 return (stored_name)
             elif match_score > 0.61:
-                print(match_score,stored_name)
+                print(match_score, stored_name)
                 matches.append((match_score, stored_name))
     if matches == []:
-        print("could not find a match for \"%s\"" %player)
+        print("could not find a match for \"%s\"" % player)
         return None
     else:
         sorted_matches = sorted(matches, key=lambda tup: tup[0], reverse=True)
         best_match = sorted_matches[0]
-        print("best match for %s is %s" %(player,best_match))
+        print("best match for %s is %s" % (player, best_match))
         print(best_match)
         print(best_match[1])
         return best_match
@@ -98,16 +98,17 @@ def get_player_info(player, rankings, nicknames):
     # so we're only going to check the lines that have at least one
     # of the names from a players full name
 
-    print("checking for %s in rankings..." %provided_name)
+    print("checking for %s in rankings..." % provided_name)
     matches = []
     for row in rankings:
         split_name = provided_name.split(" ")
         stored_name = row['playername']
 
-        print(split_name,stored_name)
+        print(split_name, stored_name)
 
         if any(s in stored_name for s in split_name):
-            print("checking for %s in rankings with initial search" %provided_name)
+            print(
+                "checking for %s in rankings with initial search" % provided_name)
             match_score = name_tools.match(provided_name, stored_name)
             pos = str(row['playerposition'])
             team = str(row['playerteam'])
@@ -116,20 +117,83 @@ def get_player_info(player, rankings, nicknames):
             # if we get a perfect match, automatically return that
             if match_score == 1.0:
                 return (
-                match_score, stored_name, pos, team, ovr_rank, pos_rank)
+                    match_score, stored_name, pos, team, ovr_rank, pos_rank)
             elif match_score > 0.60:
                 matches.append(
                     (match_score, stored_name, pos, team, ovr_rank, pos_rank))
             else:
-                print("did not find a match for %s in ranking with initial search" %provided_name)
-                print("checking for %s in rankings with FULL search" %provided_name)
+                print(
+                    "did not find a match for %s in ranking with initial search" % provided_name)
+                print(
+                    "checking for %s in rankings with FULL search" % provided_name)
                 return None
     if matches == []:
-        print("could not find a match for \"%s\"" %provided_name)
+        print("could not find a match for \"%s\"" % provided_name)
     else:
         sorted_matches = sorted(matches, key=lambda tup: tup[0], reverse=True)
         best_match = sorted_matches[0]
         return best_match
+
+
+def verify_possible_players(input, nicknames, rankings):
+    possible_players = identify_possible_players(input)
+    print("Possible players: %s" % possible_players)
+    confirmed_players = []
+    for player in possible_players:
+        # check nicknames
+        nickname = check_player_by_nickname(player, nicknames)
+        if nickname is not None:
+            confirmed_players.append(nickname)
+            possible_players.remove(player)
+
+    print("Possible players after nickname check: %s" % possible_players)
+    print("Confirmed players after nickname check: %s" % confirmed_players)
+
+    # combine adjacent items in list to see if those names match anything
+    possible_players = [x + " " + y for x, y in
+                        zip(possible_players, possible_players[1:])]
+    print("new list is: %s" % possible_players)
+    for player in possible_players:
+        # check against rankings list
+        against_list = check_player_against_rankings(player,
+                                                     rankings)
+        if against_list is not None:
+            confirmed_players.append(against_list)
+            possible_players.remove(player)
+
+    print("Possible players after check against list: %s" % possible_players)
+    print("Confirmed players after check against list: %s" % confirmed_players)
+
+    # remove single characters. we're not doing a single element search
+    # on a single character
+    possible_players = [item for word in possible_players for item in
+                        word.split(' ')]
+    possible_players = [el for el in possible_players if len(el) > 1]
+    temp_possible_players = [item for word in possible_players for item in
+                             word.split(' ')]
+    print(temp_possible_players)
+    for p in temp_possible_players:
+        print("checking for \"%s\"" % p.lower())
+        for c in confirmed_players:
+            if p.lower() in c[1].lower():
+                print("Removing \"%s\"" % p)
+                possible_players.remove(p)
+
+    print(
+        "Possible players after removing used items is: %s" % possible_players)
+    for player in possible_players:
+        # check against rankings list
+        against_list = check_player_against_rankings(player,
+                                                                 rankings)
+        if against_list is not None:
+            confirmed_players.append(against_list)
+            possible_players.remove(player)
+
+    print(
+        "Possible players after final check against list: %s" % possible_players)
+    print(
+        "Confirmed players after final check against list: %s" % confirmed_players)
+    return confirmed_players
 
 
 def return_selection(players, selections):
