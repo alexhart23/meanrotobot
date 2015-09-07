@@ -11,7 +11,10 @@ def get_tweet():
     tweet = """Who should I start Aaron Rodgers or Tom Brady?""" # worked #32.12 second to finish. 6.09 after. MONEY
     tweet = """Who should I start Aaron Rodgers or Luck?""" # worked
     tweet = """Who should I start Aaron Rodgers or luck?""" #did not work. didn't id luck as a noun
-
     tweet = """Pick 2: AD, Gronk, CJ2K,Megatron"""  # 8.37 seconds to finish. 5.83 after
-    #tweet = """Peyton or Eli?""" # doesn't work. can't match just first names
+    tweet = """Peyton or Eli?""" # doesn't work. can't match just first names
+    tweet = """Tucker or Forbath"""
+    tweet = """pick 2 AD, Bell, or Lacy,Megatron,Antonio Brown"""
+    tweet = """LeVeon Bell or or Lacy"""
+    #tweet = """CJ2K or David Johnson"""
     return tweet
