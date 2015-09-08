@@ -1,3 +1,4 @@
 nltk
 name_tools
 numpy
+twython
