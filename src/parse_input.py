@@ -1,7 +1,6 @@
 __author__ = 'Alex Hart'
 
 import nltk
-from nltk.tree import Tree
 import name_tools
 import csv
 

@@ -23,7 +23,7 @@ def determine_response_category(options):
     return response_category
 
 
-def compose_tweet(selections,category,response_type="rand"):
+def compose_tweet(selections,category,user,response_type="rand"):
     responses = csv.DictReader(open("responses/%s.csv"%category))
     data =[row['phrase'] for row in responses]
     rand_response = random.choice(data)
@@ -42,7 +42,7 @@ def compose_tweet(selections,category,response_type="rand"):
     else:
         response = rand_response
     response_len = len(response)
-    if validate_tweet(response) is True:
+    if validate_tweet(user+" "+response) is True:
         return response, response_len
     else:
         print(response)
@@ -53,7 +53,7 @@ def compose_tweet(selections,category,response_type="rand"):
 # make sure the tweet is <= 140 chars
 def validate_tweet(response):
     # using 120 so we have room for the twitter handle
-    if len(response) <= 120:
+    if len(response) <= 140:
         return True
     else:
         return False
