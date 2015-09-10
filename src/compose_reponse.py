@@ -29,6 +29,7 @@ def compose_tweet(selections,category,user,response_type="rand"):
     responses = csv.DictReader(open("responses/%s.csv"%category))
     data =[row['phrase'] for row in responses]
     rand_response = random.choice(data)
+    print(rand_response)
     if "%s" in rand_response:
         if len(selections) == 2:
             selection = "%s and %s" % (selections[0][0], selections[1][0])
