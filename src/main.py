@@ -12,6 +12,7 @@ def submit_results(form_id, user, raw_tweet,
                    selections,
                    category,
                    response,
+                   response_len,
                    tweet_id):
     url = "https://docs.google.com/forms/d/%s/formResponse" % form_id
     submission = {"entry.2105335826": user,
@@ -22,6 +23,7 @@ def submit_results(form_id, user, raw_tweet,
                   "entry.1779266700": selections,
                   "entry.1211763545": category,
                   "entry.468172303": response,
+                  "entry.1997131024": response_len,
                   "entry.1793373159": tweet_id,
                   }
 
@@ -71,6 +73,7 @@ def respond(tweet_text, user, tweet_id):
                        selections=selections,
                        category=category,
                        response=response,
+                       response_len=response_len,
                        tweet_id=tweet_id)
         return response
     elif question == "unknown":

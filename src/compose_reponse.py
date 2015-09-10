@@ -12,14 +12,16 @@ def determine_response_category(options):
     print(rankings)
     if any(obj for obj in options if obj[1]=="K"):
         response_category = "kickers"
+    elif any(rank == 1 for rank in rankings):
+        response_category = "number_one"
     elif all(rank < 20 for rank in rankings):
         response_category = "small_gap_very_high"
     elif all(rank > 150 for rank in rankings):
         response_category = "small_gap_low"
-    elif any(numpy.diff(rankings) > 50):
+    elif any(numpy.diff(rankings) > 25):
         response_category = "large_gap"
     else:
-        response_category = "standard"
+        response_category = "small_gap"
     return response_category
 
 
@@ -47,7 +49,7 @@ def compose_tweet(selections,category,user,response_type="rand"):
     else:
         print(response)
         print("response is too long. it's %s characters" %response_len)
-        return None
+        return None, response_len
 
 
 # make sure the tweet is <= 140 chars

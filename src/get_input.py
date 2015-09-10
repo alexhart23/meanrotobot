@@ -19,13 +19,15 @@ def post_response(reply,tweet_id):
 
 class MyStreamer(TwythonStreamer):
     def on_success(self, data):
-        if ('text' in data) and (data['in_reply_to_user_id'] is not None):
+        if ('text' in data) and (data['in_reply_to_status_id'] is None):
+            print(data)
             tweet_text = data['text']
             user = '@' + data['user']['screen_name']
             tweet_id = data['id_str']
             response = main.respond(tweet_text, user, tweet_id)
-            reply = user + " " + response
-            post_response(reply,tweet_id)
+            if response is not None:
+                reply = user + " " + response
+                post_response(reply,tweet_id)
 
     def on_error(self, status_code, data):
         print(status_code)
