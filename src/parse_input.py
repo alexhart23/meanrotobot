@@ -39,8 +39,10 @@ def identify_total_selections(input):
 def identify_possible_players(input):
     players = []
     tokens = tokenize_input(input)
-    players = [i[0] for i in tokens if i[1] == "NN" or i[1] == "NNP"]
-    # players = [el for el in players if el != "ppr"]
+    #players = [i[0] for i in tokens if i[1] == "NN" or i[1] == "NNP"]
+    players = [i[0] for i in tokens]
+    to_ignore = ['ppr','or','start','choose','pick','@','MeanRotobot']
+    players = [el for el in players if el.lower() not in to_ignore]
     return players
 
 
@@ -76,12 +78,14 @@ def check_player_against_rankings(player, rankings):
             # if we get a perfect match, automatically return that
             if match_score == 1.0:
                 return (stored_name)
-            elif match_score > 0.61:
+            else:
                 #print(match_score, stored_name)
                 matches.append((match_score, stored_name))
     if matches == []:
         #print("could not find a match for \"%s\"" % player)
         return None
+    elif len(matches) == 1:
+        return matches[0]
     else:
         sorted_matches = sorted(matches, key=lambda tup: tup[0], reverse=True)
         best_match = sorted_matches[0]
