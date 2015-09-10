@@ -19,7 +19,8 @@ def post_response(reply,tweet_id):
 
 class MyStreamer(TwythonStreamer):
     def on_success(self, data):
-        if ('text' in data) and (data['in_reply_to_status_id'] is None):
+        if ('text' in data) and (data['in_reply_to_status_id'] is None) \
+                and ('@meanrotobot'.lower() in data['text'].lower()):
             print(data)
             tweet_text = data['text']
             user = '@' + data['user']['screen_name']

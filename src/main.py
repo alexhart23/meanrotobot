@@ -82,4 +82,3 @@ def respond(tweet_text, user, tweet_id):
             return None
     elif question == "unknown":
         print("question unknown")
-        sys.exit(1)
