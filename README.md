@@ -9,3 +9,5 @@ MeanRotobot is a Twitter based bot that will answer weekly fantasy football ques
 Unfortunately, it has little tolerance for stupid questions, and will make sure you know that.
 
 @meanrotobot
+
+Projections courtesy of www.fantasyfootballanalytics.net
