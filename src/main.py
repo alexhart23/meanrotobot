@@ -57,25 +57,29 @@ def respond(tweet_text, user, tweet_id):
                                                              configs.rankings)
         selections, player_options = parse_input.return_selection(
             players_with_info, picks)
-        print("\nSelection(s) are: %s" % selections)
-        category = compose_reponse.determine_response_category(player_options)
-        print("Category is: %s" % category)
-        response, response_len = compose_reponse.compose_tweet(selections,
+        if selections != []:
+            print("\nSelection(s) are: %s" % selections)
+            category = compose_reponse.determine_response_category(player_options)
+            print("Category is: %s" % category)
+            response, response_len = compose_reponse.compose_tweet(selections,
                                                                category, user)
-        print("Response is: %s" % response)
+            print("Response is: %s" % response)
 
-        submit_results(form_id=secrets.FORM_ID,
-                       user=user,
-                       raw_tweet=tweet_text,
-                       tagged_tweet=tokens,
-                       question=question,
-                       confirmed_players=confirmed_players,
-                       selections=selections,
-                       category=category,
-                       response=response,
-                       response_len=response_len,
-                       tweet_id=tweet_id)
-        return response
+            submit_results(form_id=secrets.FORM_ID,
+                           user=user,
+                           raw_tweet=tweet_text,
+                           tagged_tweet=tokens,
+                           question=question,
+                           confirmed_players=confirmed_players,
+                           selections=selections,
+                           category=category,
+                           response=response,
+                           response_len=response_len,
+                           tweet_id=tweet_id)
+            return response
+        else:
+            print("Could not identify any players")
+            return None
     elif question == "unknown":
         print("question unknown")
         sys.exit(1)
