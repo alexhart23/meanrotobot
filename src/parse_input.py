@@ -78,14 +78,12 @@ def check_player_against_rankings(player, rankings):
             # if we get a perfect match, automatically return that
             if match_score == 1.0:
                 return (stored_name)
-            else:
+            elif match_score > 0.61:
                 #print(match_score, stored_name)
                 matches.append((match_score, stored_name))
     if matches == []:
         #print("could not find a match for \"%s\"" % player)
         return None
-    elif len(matches) == 1:
-        return matches[0]
     else:
         sorted_matches = sorted(matches, key=lambda tup: tup[0], reverse=True)
         best_match = sorted_matches[0]
