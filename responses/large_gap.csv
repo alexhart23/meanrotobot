@@ -1,9 +1,8 @@
 phrase,char_count
 This is what I have to deal with it... start %s and go away,59
-Just dump me in a bathtub already. This can't be a serious question,67
-*beep boop beep boop* My calculations state that this is a dumb fucking question.,81
+Just dump me in a bathtub already. This can't be a serious question. %s,71
 "If this question is any indication of your fantasy prowess, you gave away your buy in this year. %s",99
-Is everyone in your league this dumb?,37
+Is everyone in your league this dumb? I hope so for your sake %s,64
 %s. I hope you lose for asking such a stupid question,53
 There are 6 year olds that can answer this question for you... %s,65
 "%s, but if you have to ask, my highly complex robot algorithm isn't going to help you",85
