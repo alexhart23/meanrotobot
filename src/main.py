@@ -4,6 +4,7 @@ from src import configs, parse_input, compose_reponse, secrets
 import requests
 import sys
 
+
 # submit the results to a google form for tracking purposes AKA logging
 def submit_results(form_id, user, raw_tweet,
                    tagged_tweet,
@@ -29,14 +30,26 @@ def submit_results(form_id, user, raw_tweet,
 
     requests.post(url, submission)
 
+def determine_rankings(ppr, t=False):
+    # use appropriate rankings based on notes
+    if t is True:
+        rankings = configs.test_rankings
+    elif ppr is True:
+        rankings = configs.ppr_rankings
+    else:
+        rankings = configs.rankings
+    return rankings
 
-def respond(tweet_text, user, tweet_id):
+
+def respond(tweet_text, user, tweet_id, t=False):
     tweet = tweet_text.lower()
     tokens = parse_input.tokenize_input(tweet_text)
     question = parse_input.identify_question(tweet)
     # TODO use different rankings based on ppr and return yards
     ppr = parse_input.is_ppr(tweet)
     return_yards = parse_input.is_return_yards(tweet)
+
+    rankings = determine_rankings(ppr)
 
     print("Tweet: \"%s\"" % tweet)
 
@@ -51,18 +64,20 @@ def respond(tweet_text, user, tweet_id):
 
         confirmed_players = parse_input.verify_possible_players(tweet_text,
                                                                 configs.nicknames,
-                                                                configs.rankings)
+                                                                rankings)
         print("\nPlayers confirmed: %s" % confirmed_players)
         players_with_info = parse_input.populate_player_info(confirmed_players,
-                                                             configs.rankings)
+                                                             rankings)
         selections, player_options = parse_input.return_selection(
             players_with_info, picks)
         if selections != []:
             print("\nSelection(s) are: %s" % selections)
-            category = compose_reponse.determine_response_category(player_options)
+            category = compose_reponse.determine_response_category(
+                player_options)
             print("Category is: %s" % category)
             response, response_len = compose_reponse.compose_tweet(selections,
-                                                               category, user)
+                                                                   category,
+                                                                   user)
             print("Response is: %s" % response)
 
             submit_results(form_id=secrets.FORM_ID,

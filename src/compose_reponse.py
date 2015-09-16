@@ -10,6 +10,7 @@ def determine_response_category(options):
     for i in options:
         rankings.append(i[3])
     print(rankings)
+
     if any(obj for obj in options if obj[1]=="K"):
         response_category = "kickers"
     elif any(rank == 1 for rank in rankings):
