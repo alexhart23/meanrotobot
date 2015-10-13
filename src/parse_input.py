@@ -23,13 +23,13 @@ def identify_question(input):
 
 
 def identify_total_selections(input):
-    if (" 2" or "two") in input:
+    if " 2" in input or "two" in input:
         return 2
-    elif (" 3" or "three") in input:
+    elif " 3" in input or "three" in input:
         return 3
-    elif (" 4" or "four") in input:
+    elif " 4" in input or "four" in input:
         return 4
-    elif (" 5" or "five") in input:
+    elif " 5" in input or "five" in input:
         return 5
     else:
         return 1
@@ -187,5 +187,5 @@ def is_ppr(input):
 
 
 def is_return_yards(input):
-    if ("return" or "kr") in input:
+    if "return" in input or "kr" in input:
         return True
